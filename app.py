@@ -229,7 +229,7 @@ with iface:
             textbox = gr.Textbox(
                 value="A forest of wind chimes singing a soothing melody in the breeze.",
                 max_lines=1,
-                label="Input your text here. Your text is important for the audio quality. Please ensure it is descriptive by using more adjectives.",
+                label="Input your text here. If the output is not good enough, switching to a different seed will help.",
                 elem_id="prompt-in",
             )
 
@@ -299,14 +299,6 @@ with iface:
         )
         gr.Examples(
             [
-                [
-                    "A cat is meowing for attention.",
-                    10,
-                    3.5,
-                    45,
-                    3,
-                    default_checkpoint,
-                ],
                 [
                     "Birds singing sweetly in a blooming garden.",
                     10,
