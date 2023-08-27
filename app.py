@@ -299,14 +299,14 @@ with iface:
         )
         gr.Examples(
             [
-                [
-                    "Birds singing sweetly in a blooming garden.",
-                    10,
-                    3.5,
-                    45,
-                    3,
-                    default_checkpoint,
-                ],
+                # [
+                #     "Birds singing sweetly in a blooming garden.",
+                #     10,
+                #     3.5,
+                #     45,
+                #     3,
+                #     default_checkpoint,
+                # ],
                 [
                     "A modern synthesizer creating futuristic soundscapes.",
                     10,
