@@ -359,6 +359,6 @@ with iface:
             )
 # <p>This demo is strictly for research demo purpose only. For commercial use please <a href="haoheliu@gmail.com">contact us</a>.</p>
 
-iface.queue(maxsize=20)
+iface.queue(max_size=20)
 iface.launch(debug=True)
 # iface.launch(debug=True, share=True)
