@@ -1,0 +1,9 @@
+git+https://github.com/huggingface/diffusers.git
+git+https://github.com/haoheliu/AudioLDM2.git
+transformers==4.30.2
+--extra-index-url https://download.pytorch.org/whl/cu113
+torch >= 2.0
+gradio_client==0.2.7
+huggingface_hub
+pydantic<2
+timm
