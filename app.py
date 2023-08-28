@@ -253,7 +253,7 @@ with iface:
                 n_candidates = gr.Slider(
                     1,
                     3,
-                    value=3,
+                    value=1,
                     step=1,
                     label="Automatic quality control. This number control the number of candidates (e.g., generate three audios and choose the best to show you). A Larger value usually lead to better quality with heavier computation",
                 )
