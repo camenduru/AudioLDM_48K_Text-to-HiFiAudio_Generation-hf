@@ -54,7 +54,7 @@ def text2audio(
         waveform = waveform[0]
     return waveform
 
-text_to_audio("Birds singing sweetly in a blooming garden.", 10, 3.5, 45, 3, default_checkpoint)
+text2audio("Birds singing sweetly in a blooming garden.", 10, 3.5, 45, 3, default_checkpoint)
 
 css = """
         a {
