@@ -324,7 +324,7 @@ with iface:
             inputs=[textbox, duration, guidance_scale, seed, n_candidates, model_name],
             # inputs=[textbox, guidance_scale, seed, n_candidates],
             outputs=[outputs],
-            cache_examples=True,
+            cache_examples=False,
         )
         gr.HTML(
             """
