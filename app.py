@@ -262,14 +262,6 @@ with iface:
             ############# Output
             # outputs=gr.Audio(label="Output", type="numpy")
             outputs = gr.Video(label="Output", elem_id="output-video")
-
-            # with gr.Group(elem_id="container-advanced-btns"):
-            #   # advanced_button = gr.Button("Advanced options", elem_id="advanced-btn")
-            #   with gr.Group(elem_id="share-btn-container"):
-            #     community_icon = gr.HTML(community_icon_html, visible=False)
-            #     loading_icon = gr.HTML(loading_icon_html, visible=False)
-            #     share_button = gr.Button("Share to community", elem_id="share-btn", visible=False)
-            # outputs=[gr.Audio(label="Output", type="numpy"), gr.Audio(label="Output", type="numpy")]
             btn = gr.Button("Submit").style(full_width=True)
 
         # btn.click(text2audio, inputs=[
@@ -280,8 +272,6 @@ with iface:
             outputs=[outputs],
             api_name="text2audio",
         )
-
-        share_button.click(None, [], [], _js=share_js)
         gr.HTML(
             """
         <div class="footer" style="text-align: center; max-width: 700px; margin: 0 auto;">
