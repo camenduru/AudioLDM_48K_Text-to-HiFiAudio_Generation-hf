@@ -6,9 +6,6 @@ import os
 import gradio as gr
 from audioldm2 import text_to_audio, build_model
 
-os.environ["TOKENIZERS_PARALLELISM"] = "true"
-
-# default_checkpoint="audioldm2-full"
 default_checkpoint="audioldm_48k"
 audioldm = None
 current_model_name = None
@@ -27,8 +24,6 @@ def text2audio(
     if audioldm is None or model_name != current_model_name:
         audioldm = build_model(model_name=model_name)
         current_model_name = model_name
-        # audioldm = torch.compile(audioldm)
-    # print(text, length, guidance_scale)
     if("48k" in model_name):
         latent_t_per_second=12.8
         sample_rate=48000
@@ -44,154 +39,16 @@ def text2audio(
         guidance_scale=guidance_scale,
         n_candidate_gen_per_text=int(n_candidates),
         latent_t_per_second=latent_t_per_second,
-    )  # [bs, 1, samples]
+    )
     waveform = [
         gr.make_waveform((sample_rate, wave[0]), bg_image="bg.png") for wave in waveform
     ]
-    # waveform = [(16000, np.random.randn(16000)), (16000, np.random.randn(16000))]
     if len(waveform) == 1:
         waveform = waveform[0]
     return waveform
 
 text2audio("Birds singing sweetly in a blooming garden.", 10, 3.5, 45, 3, default_checkpoint)
-
-css = """
-        a {
-            color: inherit;
-            text-decoration: underline;
-        }
-        .gradio-container {
-            font-family: 'IBM Plex Sans', sans-serif;
-        }
-        .gr-button {
-            color: white;
-            border-color: #000000;
-            background: #000000;
-        }
-        input[type='range'] {
-            accent-color: #000000;
-        }
-        .dark input[type='range'] {
-            accent-color: #dfdfdf;
-        }
-        .container {
-            max-width: 730px;
-            margin: auto;
-            padding-top: 1.5rem;
-        }
-        #gallery {
-            min-height: 22rem;
-            margin-bottom: 15px;
-            margin-left: auto;
-            margin-right: auto;
-            border-bottom-right-radius: .5rem !important;
-            border-bottom-left-radius: .5rem !important;
-        }
-        #gallery>div>.h-full {
-            min-height: 20rem;
-        }
-        .details:hover {
-            text-decoration: underline;
-        }
-        .gr-button {
-            white-space: nowrap;
-        }
-        .gr-button:focus {
-            border-color: rgb(147 197 253 / var(--tw-border-opacity));
-            outline: none;
-            box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-            --tw-border-opacity: 1;
-            --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-            --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px var(--tw-ring-offset-width)) var(--tw-ring-color);
-            --tw-ring-color: rgb(191 219 254 / var(--tw-ring-opacity));
-            --tw-ring-opacity: .5;
-        }
-        #advanced-btn {
-            font-size: .7rem !important;
-            line-height: 19px;
-            margin-top: 12px;
-            margin-bottom: 12px;
-            padding: 2px 8px;
-            border-radius: 14px !important;
-        }
-        #advanced-options {
-            margin-bottom: 20px;
-        }
-        .footer {
-            margin-bottom: 45px;
-            margin-top: 35px;
-            text-align: center;
-            border-bottom: 1px solid #e5e5e5;
-        }
-        .footer>p {
-            font-size: .8rem;
-            display: inline-block;
-            padding: 0 10px;
-            transform: translateY(10px);
-            background: white;
-        }
-        .dark .footer {
-            border-color: #303030;
-        }
-        .dark .footer>p {
-            background: #0b0f19;
-        }
-        .acknowledgments h4{
-            margin: 1.25em 0 .25em 0;
-            font-weight: bold;
-            font-size: 115%;
-        }
-        #container-advanced-btns{
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .animate-spin {
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-        #share-btn-container {
-            display: flex; padding-left: 0.5rem !important; padding-right: 0.5rem !important; background-color: #000000; justify-content: center; align-items: center; border-radius: 9999px !important; width: 13rem;
-            margin-top: 10px;
-            margin-left: auto;
-        }
-        #share-btn {
-            all: initial; color: #ffffff;font-weight: 600; cursor:pointer; font-family: 'IBM Plex Sans', sans-serif; margin-left: 0.5rem !important; padding-top: 0.25rem !important; padding-bottom: 0.25rem !important;right:0;
-        }
-        #share-btn * {
-            all: unset;
-        }
-        #share-btn-container div:nth-child(-n+2){
-            width: auto !important;
-            min-height: 0px !important;
-        }
-        #share-btn-container .wrap {
-            display: none !important;
-        }
-        .gr-form{
-            flex: 1 1 50%; border-top-right-radius: 0; border-bottom-right-radius: 0;
-        }
-        #prompt-container{
-            gap: 0;
-        }
-        #generated_id{
-            min-height: 700px
-        }
-        #setting_id{
-          margin-bottom: 12px;
-          text-align: center;
-          font-weight: 900;
-        }
-"""
-iface = gr.Blocks(css=css)
+iface = gr.Blocks()
 
 with iface:
     gr.HTML(
@@ -217,14 +74,12 @@ with iface:
     )
     with gr.Group():
         with gr.Box():
-            ############# Input
             textbox = gr.Textbox(
                 value="A forest of wind chimes singing a soothing melody in the breeze.",
                 max_lines=1,
                 label="Input your text here. If the output is not good enough, switching to a different seed will help.",
                 elem_id="prompt-in",
             )
-
             with gr.Accordion("Click to modify detailed configurations", open=False):
                 seed = gr.Number(
                     value=45,
@@ -250,13 +105,9 @@ with iface:
                 model_name = gr.Dropdown(
                       ["audioldm_48k", "audioldm_crossattn_flant5", "audioldm2-full"], value="audioldm_48k",
                   )
-            ############# Output
-            # outputs=gr.Audio(label="Output", type="numpy")
             outputs = gr.Video(label="Output", elem_id="output-video")
             btn = gr.Button("Submit").style(full_width=True)
 
-        # btn.click(text2audio, inputs=[
-        #           textbox, duration, guidance_scale, seed, n_candidates, model_name], outputs=[outputs])
         btn.click(
             text2audio,
             inputs=[textbox, duration, guidance_scale, seed, n_candidates],
@@ -303,7 +154,6 @@ with iface:
             ],
             fn=text2audio,
             inputs=[textbox, duration, guidance_scale, seed, n_candidates, model_name],
-            # inputs=[textbox, guidance_scale, seed, n_candidates],
             outputs=[outputs],
             cache_examples=False,
         )
@@ -326,8 +176,6 @@ with iface:
                             </div>
                         """
             )
-# <p>This demo is strictly for research demo purpose only. For commercial use please <a href="haoheliu@gmail.com">contact us</a>.</p>
 
 iface.queue(max_size=20)
 iface.launch(debug=True, share=True)
-# iface.launch(debug=True, share=True)
