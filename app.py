@@ -5,7 +5,6 @@ import os
 
 import gradio as gr
 from audioldm2 import text_to_audio, build_model
-from share_btn import community_icon_html, loading_icon_html, share_js
 
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
@@ -273,11 +272,6 @@ with iface:
             # outputs=[gr.Audio(label="Output", type="numpy"), gr.Audio(label="Output", type="numpy")]
             btn = gr.Button("Submit").style(full_width=True)
 
-        with gr.Group(elem_id="share-btn-container", visible=False):
-            community_icon = gr.HTML(community_icon_html)
-            loading_icon = gr.HTML(loading_icon_html)
-            share_button = gr.Button("Share to community", elem_id="share-btn")
-
         # btn.click(text2audio, inputs=[
         #           textbox, duration, guidance_scale, seed, n_candidates, model_name], outputs=[outputs])
         btn.click(
@@ -354,5 +348,5 @@ with iface:
 # <p>This demo is strictly for research demo purpose only. For commercial use please <a href="haoheliu@gmail.com">contact us</a>.</p>
 
 iface.queue(max_size=20)
-iface.launch(debug=True)
+iface.launch(debug=True, share=True)
 # iface.launch(debug=True, share=True)
